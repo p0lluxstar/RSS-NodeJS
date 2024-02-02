@@ -3,13 +3,14 @@ import os from 'os';
 import path from 'path';
 import readline from 'readline';
 import enterName from './modules/EnterName.js';
-import exitMessege from './modules/exitMessege.js';
-import listFoldersAndFiles from './modules/listFoldersAndFiles.js';
+import exitCommand from './modules/exitCommand.js';
+import lsCommand from './modules/lsCommand.js';
+import searchDirectoriesAndFiles from './modules/utils/searchDirectoriesAndFiles.js';
 
 const args = process.argv.slice(2);
 const homeDirectory = os.homedir();
 let username;
-let currentDirectory = os.homedir();
+export let currentDirectory = os.homedir();
 
 args.forEach(arg => {
     if (arg.includes('--username=')) {
@@ -25,11 +26,13 @@ const rl = readline.createInterface({
 
 rl.on('line', function (input) {
     if (input === '.exit') {
-        exitMessege(username);
+        exitCommand(username);
+        return;
     }
 
     if (input === 'ls') {
-        listFoldersAndFiles(currentDirectory)
+        lsCommand(currentDirectory)
+        return;
     }
 
     if (input === 'up') {
@@ -39,16 +42,34 @@ rl.on('line', function (input) {
             currentDirectory = path.resolve(currentDirectory, '..');
         }
 
-        console.log(`You are currently in ${currentDirectory}`)
+        console.log(`You are currently in ${currentDirectory}`);
+        return;
     }
 
     if (input.substring(0, 2) === 'cd') {
-        const nameFolder = input.substring(3);
-        currentDirectory += `\\${nameFolder}`;
-        console.log(`You are currently in ${currentDirectory}`)
+
+        const cdNameFolder = input.substring(3);
+
+        searchDirectoriesAndFiles(currentDirectory)
+            .then(({directories}) => {
+                if (directories.includes(cdNameFolder)) {
+                    currentDirectory += `\\${cdNameFolder}`;
+                } else {
+                    console.log('The folder name is incorrect!')
+                }
+                console.log(`You are currently in ${currentDirectory}`)
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error);
+            });
+
+        return;
     }
+
+    console.log('Invalid input!');
+    console.log(`You are currently in ${currentDirectory}`)
 });
 
 rl.on('SIGINT', function () {
-    exitMessege(username);
+    exitCommand(username);
 });
