@@ -1,5 +1,5 @@
-import { currentDirectory } from '../../index.js'
-import { userName } from '../enterName.js';
+import { currentDirectory } from '../index.js'
+import { userName } from '../modules/enterName.js';
 
 export const currentDirectoryMessege = () => {
     process.stdout.write(`You are currently in ${currentDirectory}\n`);
@@ -15,4 +15,8 @@ export const welcomeMessege = () => {
 
 export const exitMessege = () => {
     process.stdout.write(`Thank you for using File Manager, ${userName}, goodbye!\n`);
+}
+
+export const invalidMessege = () => {
+    process.stdout.write(`Invalid input!\n`);
 }

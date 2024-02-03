@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { currentDirectoryMessege, operationFailedMessege } from './utils/answerInConsole.js';
+import { currentDirectoryMessege, operationFailedMessege } from '../utils/answerInConsole.js';
 
 const catCommand = (pathToFile, currentDirectory) => {
     const rs = fs.createReadStream(pathToFile);

@@ -1,5 +1,5 @@
-import searchDirectoriesAndFiles from './utils/searchDirectoriesAndFiles.js';
-import { currentDirectoryMessege } from './utils/answerInConsole.js';
+import searchDirectoriesAndFiles from '../utils/searchDirectoriesAndFiles.js';
+import { currentDirectoryMessege } from '../utils/answerInConsole.js';
 
 const lsCommand = (currentDirectory) => {
     searchDirectoriesAndFiles(currentDirectory)

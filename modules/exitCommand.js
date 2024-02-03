@@ -1,4 +1,4 @@
-import { exitMessege } from "./utils/answerInConsole.js";
+import { exitMessege } from "../utils/answerInConsole.js";
 
 const exitCommand = () => {
     exitMessege()

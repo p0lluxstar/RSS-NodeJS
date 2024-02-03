@@ -1,4 +1,4 @@
-import { currentDirectoryMessege, operationFailedMessege, welcomeMessege } from './utils/answerInConsole.js';
+import { currentDirectoryMessege, operationFailedMessege, welcomeMessege } from '../utils/answerInConsole.js';
 export let userName;
 
 const enterName = () => {

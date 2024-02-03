@@ -1,13 +1,13 @@
-
 import os from 'os';
 import path from 'path';
 import readline from 'readline';
 import enterName, { userName } from './modules/enterName.js';
 import exitCommand from './modules/exitCommand.js';
 import lsCommand from './modules/lsCommand.js';
-import searchDirectoriesAndFiles from './modules/utils/searchDirectoriesAndFiles.js';
-import { currentDirectoryMessege } from './modules/utils/answerInConsole.js';
+import searchDirectoriesAndFiles from './utils/searchDirectoriesAndFiles.js';
+import { currentDirectoryMessege, invalidMessege } from './utils/answerInConsole.js';
 import catCommand from './modules/catCommand.js';
+import addCommand from './modules/addCommand.js';
 
 export let currentDirectory = os.homedir();
 
@@ -59,7 +59,13 @@ rl.on('line', function (input) {
         return;
     }
 
-    process.stdout.write(`Invalid input!\n`);
+    if (input.substring(0, 3) === 'add') {
+        const fileName = input.substring(4);
+        addCommand(currentDirectory, fileName);
+        return;
+    }
+
+    invalidMessege();
     currentDirectoryMessege();
 });
 
