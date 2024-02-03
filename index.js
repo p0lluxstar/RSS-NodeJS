@@ -8,6 +8,7 @@ import searchDirectoriesAndFiles from './utils/searchDirectoriesAndFiles.js';
 import { currentDirectoryMessege, invalidMessege } from './utils/answerInConsole.js';
 import catCommand from './modules/catCommand.js';
 import addCommand from './modules/addCommand.js';
+import rnCommand from './modules/rnCommand.js';
 
 export let currentDirectory = os.homedir();
 
@@ -62,6 +63,12 @@ rl.on('line', function (input) {
     if (input.substring(0, 3) === 'add') {
         const fileName = input.substring(4);
         addCommand(currentDirectory, fileName);
+        return;
+    }
+
+    if (input.substring(0, 2) === 'rn') {
+        const names = input.split(' ');
+        rnCommand(currentDirectory, names[1], names[2]);
         return;
     }
 
