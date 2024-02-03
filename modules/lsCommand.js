@@ -1,6 +1,7 @@
 import searchDirectoriesAndFiles from './utils/searchDirectoriesAndFiles.js';
+import { currentDirectoryMessege } from './utils/answerInConsole.js';
 
-export default function lsCommand(currentDirectory) {
+const lsCommand = (currentDirectory) => {
     searchDirectoriesAndFiles(currentDirectory)
         .then(({ directories, filesList }) => {
             const directoriesAndFiles = [];
@@ -14,9 +15,11 @@ export default function lsCommand(currentDirectory) {
             });
 
             console.table(directoriesAndFiles);
-            console.log(`You are currently in ${currentDirectory}`);
+            currentDirectoryMessege()
         })
         .catch((error) => {
             console.error('Ошибка:', error);
         });
 }
+
+export default lsCommand;

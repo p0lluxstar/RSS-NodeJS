@@ -1,10 +1,20 @@
-export default function enterName(username, homeDirectory) {
+import { currentDirectoryMessege, operationFailedMessege, welcomeMessege } from './utils/answerInConsole.js';
+export let userName;
 
-    if (!username) {
-        console.log('Invalid user name!');
-        process.exit(1);
-    } else {
-        console.log(`Welcome to the File Manager, ${username}!`);
-        console.log(`You are currently in ${homeDirectory}`);
-    }
+const enterName = () => {
+
+    const args = process.argv.slice(2);
+
+    args.forEach(arg => {
+        if (arg.includes('--username=')) {
+            userName = arg.split('=')[1];
+            welcomeMessege(userName);
+            currentDirectoryMessege();
+        } else {
+            operationFailedMessege();
+            process.exit(1);
+        }
+    });
 }
+
+export default enterName;

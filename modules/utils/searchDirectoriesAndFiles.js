@@ -1,11 +1,10 @@
 import fs from 'fs';
 
-const searchDirectoriesAndFiles = (currentDirectory) => {
+const searchDirectoriesAndFiles = (directory) => {
     return new Promise((resolve, reject) => {
-        fs.readdir(currentDirectory, { withFileTypes: true }, (err, files) => {
+        fs.readdir(directory, { withFileTypes: true }, (err, files) => {
             if (err) {
-                console.error('Ошибка чтения каталога', err);
-                reject(err);
+                console.error('Operation failed!');
             } else {
                 const directories = files
                     .filter((file) => file.isDirectory())
@@ -17,6 +16,7 @@ const searchDirectoriesAndFiles = (currentDirectory) => {
                     .sort();
                 resolve({ directories, filesList });
             }
+            reject();
         });
     });
 };

@@ -2,22 +2,16 @@
 import os from 'os';
 import path from 'path';
 import readline from 'readline';
-import enterName from './modules/EnterName.js';
+import enterName, { userName } from './modules/enterName.js';
 import exitCommand from './modules/exitCommand.js';
 import lsCommand from './modules/lsCommand.js';
 import searchDirectoriesAndFiles from './modules/utils/searchDirectoriesAndFiles.js';
+import { currentDirectoryMessege } from './modules/utils/answerInConsole.js';
+import catCommand from './modules/catCommand.js';
 
-const args = process.argv.slice(2);
-const homeDirectory = os.homedir();
-let username;
 export let currentDirectory = os.homedir();
 
-args.forEach(arg => {
-    if (arg.includes('--username=')) {
-        username = arg.split('=')[1];
-        enterName(username, homeDirectory);
-    }
-});
+enterName();
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -26,7 +20,7 @@ const rl = readline.createInterface({
 
 rl.on('line', function (input) {
     if (input === '.exit') {
-        exitCommand(username);
+        exitCommand(userName);
         return;
     }
 
@@ -36,40 +30,39 @@ rl.on('line', function (input) {
     }
 
     if (input === 'up') {
-        if (currentDirectory === homeDirectory) {
-            currentDirectory = path.resolve(homeDirectory, '..');
-        } else {
-            currentDirectory = path.resolve(currentDirectory, '..');
-        }
-
-        console.log(`You are currently in ${currentDirectory}`);
+        currentDirectory = path.resolve(currentDirectory, '..');
+        currentDirectoryMessege();
         return;
     }
 
     if (input.substring(0, 2) === 'cd') {
+        let cdNameFolder = input.substring(3);
 
-        const cdNameFolder = input.substring(3);
+        if (cdNameFolder[0] === '.') {
+            cdNameFolder = currentDirectory + cdNameFolder.substring(1);
+        }
 
-        searchDirectoriesAndFiles(currentDirectory)
-            .then(({directories}) => {
-                if (directories.includes(cdNameFolder)) {
-                    currentDirectory += `\\${cdNameFolder}`;
-                } else {
-                    console.log('The folder name is incorrect!')
-                }
-                console.log(`You are currently in ${currentDirectory}`)
+        searchDirectoriesAndFiles(cdNameFolder)
+            .then(() => {
+                currentDirectory = cdNameFolder;
+                currentDirectoryMessege();
             })
-            .catch((error) => {
-                console.error('Ошибка:', error);
+            .catch(() => {
+                currentDirectoryMessege();
             });
-
         return;
     }
 
-    console.log('Invalid input!');
-    console.log(`You are currently in ${currentDirectory}`)
+    if (input.substring(0, 3) === 'cat') {
+        const pathToFile = `${currentDirectory}\\${input.substring(4)}`;
+        catCommand(pathToFile, currentDirectory)
+        return;
+    }
+
+    process.stdout.write(`Invalid input!\n`);
+    currentDirectoryMessege();
 });
 
 rl.on('SIGINT', function () {
-    exitCommand(username);
+    exitCommand(userName)
 });
