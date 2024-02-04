@@ -9,6 +9,7 @@ import { currentDirectoryMessege, invalidMessege } from './utils/answerInConsole
 import catCommand from './modules/catCommand.js';
 import addCommand from './modules/addCommand.js';
 import rnCommand from './modules/rnCommand.js';
+import cpCommand from './modules/cpCommand.js';
 
 export let currentDirectory = os.homedir();
 
@@ -67,8 +68,13 @@ rl.on('line', function (input) {
     }
 
     if (input.substring(0, 2) === 'rn') {
-        const names = input.split(' ');
-        rnCommand(currentDirectory, names[1], names[2]);
+        const commands = input.split(' ');
+        rnCommand(currentDirectory, commands[1], commands[2]);
+        return;
+    }
+
+    if (input.substring(0, 2) === 'cp') {
+        cpCommand(currentDirectory, input);
         return;
     }
 

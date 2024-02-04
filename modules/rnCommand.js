@@ -3,23 +3,18 @@ import path from 'path';
 import { currentDirectoryMessege, operationFailedMessege } from '../utils/answerInConsole.js';
 
 const rnCommand = (currentDirectory, oldNameFile, newNameFile) => {
-    const oldFilePath = path.join(currentDirectory, oldNameFile);
-    const newFilePath = path.join(currentDirectory, newNameFile);
 
-    const readStream = fs.createReadStream(oldFilePath);
-    const writeStream = fs.createWriteStream(newFilePath);
+    const folderPath = currentDirectory;
+    const oldFileName = oldNameFile;
+    const newFileName = newNameFile;
 
-    readStream.pipe(writeStream);
-
-    readStream.on('close', function () {
-        fs.unlink(oldFilePath, (err) => {
-            console.log(err)
+    fs.rename(path.join(folderPath, oldFileName), path.join(folderPath, newFileName), (err) => {
+        if (err) {
+            operationFailedMessege();
             currentDirectoryMessege();
-        });
-    });
-
-    readStream.on('error', function () {
-        operationFailedMessege();
+        } else {
+            currentDirectoryMessege();
+        }
     });
 }
 
