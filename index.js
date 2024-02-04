@@ -10,6 +10,7 @@ import catCommand from './modules/catCommand.js';
 import addCommand from './modules/addCommand.js';
 import rnCommand from './modules/rnCommand.js';
 import cpCommand from './modules/cpCommand.js';
+import mvCommand from './modules/mvCommand.js';
 
 export let currentDirectory = os.homedir();
 
@@ -75,6 +76,11 @@ rl.on('line', function (input) {
 
     if (input.substring(0, 2) === 'cp') {
         cpCommand(currentDirectory, input);
+        return;
+    }
+
+    if (input.substring(0, 2) === 'mv') {
+        mvCommand(currentDirectory, input);
         return;
     }
 
