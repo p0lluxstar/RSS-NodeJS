@@ -12,6 +12,7 @@ import rnCommand from './modules/rnCommand.js';
 import cpCommand from './modules/cpCommand.js';
 import mvCommand from './modules/mvCommand.js';
 import rmCommand from './modules/rmCommand.js';
+import osCommands from './modules/osCommands.js';
 
 export let currentDirectory = os.homedir();
 
@@ -87,6 +88,11 @@ rl.on('line', function (input) {
 
     if (input.substring(0, 2) === 'rm') {
         rmCommand(currentDirectory, input);
+        return;
+    }
+
+    if (input.substring(0, 2) === 'os') {
+        osCommands(input);
         return;
     }
 
