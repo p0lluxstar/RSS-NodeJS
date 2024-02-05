@@ -1,4 +1,4 @@
-import { currentDirectoryMessege, operationFailedMessege, welcomeMessege } from '../utils/answerInConsole.js';
+import { currentDirectoryMessege, invalidMessege, welcomeMessege } from '../utils/answerInConsole.js';
 export let userName;
 
 const enterName = () => {
@@ -11,8 +11,10 @@ const enterName = () => {
             welcomeMessege(userName);
             currentDirectoryMessege();
         } else {
-            operationFailedMessege();
+            invalidMessege();
+            process.stdout.write(`The name is incorrect! Try again!\n`);
             process.exit(1);
+
         }
     });
 }

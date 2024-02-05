@@ -2,6 +2,7 @@ import fs from 'fs';
 import { invalidMessege } from './answerInConsole.js';
 
 const searchDirectoriesAndFiles = (directory) => {
+
     return new Promise((resolve, reject) => {
         fs.readdir(directory, { withFileTypes: true }, (err, files) => {
             if (err) {

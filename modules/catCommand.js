@@ -1,9 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import { currentDirectoryMessege, operationFailedMessege } from '../utils/answerInConsole.js';
+import { arrArgs } from '../utils/arrArgs.js';
 
 const catCommand = (currentDirectory, input) => {
-    const pathToFile = path.resolve(currentDirectory, input.substring(4))
+    const arg = arrArgs(input);
+
+    const pathToFile = path.resolve(currentDirectory, arg[1])
     const rs = fs.createReadStream(pathToFile);
     rs.on('error', () => {
         operationFailedMessege();

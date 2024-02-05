@@ -6,7 +6,7 @@ const cpCommand = (currentDirectory, input) => {
 
     const commands = input.split(' ');
 
-    if (commands.length < 3) {
+    if (commands.length != 3) {
         operationFailedMessege();
         currentDirectoryMessege();
         return;

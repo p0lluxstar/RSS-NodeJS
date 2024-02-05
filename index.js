@@ -15,6 +15,9 @@ import rmCommand from './modules/rmCommand.js';
 import osCommands from './modules/osCommands.js';
 import hashCommand from './modules/hashCommand.js';
 import compressCommand from './modules/compressCommand.js';
+import deCompressCommand from './modules/decompressCommand.js';
+import { arrArgs } from './utils/arrArgs.js';
+
 
 export let currentDirectory = os.homedir();
 
@@ -44,9 +47,12 @@ rl.on('line', function (input) {
 
     if (input.substring(0, 2) === 'cd') {
         let cdNameFolder = input.substring(3);
+        const newArr = arrArgs(cdNameFolder)
 
-        if (cdNameFolder[0] === '.') {
-            cdNameFolder = path.resolve(currentDirectory, cdNameFolder.substring(1));
+        if (newArr[0][0] === '.') {
+            cdNameFolder = path.resolve(currentDirectory + newArr[0].substring(1));
+        } else {
+            cdNameFolder = newArr[0];
         }
 
         searchDirectoriesAndFiles(cdNameFolder)
@@ -102,6 +108,11 @@ rl.on('line', function (input) {
 
     if (input.substring(0, 8) === 'compress') {
         compressCommand(currentDirectory, input)
+        return;
+    }
+
+    if (input.substring(0, 10) === 'decompress') {
+        deCompressCommand(currentDirectory, input)
         return;
     }
 

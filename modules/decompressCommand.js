@@ -17,16 +17,17 @@ const compressCommand = (currentDirectory, input) => {
     let pathToNewFile;
 
     if (commands[2][0] === '.') {
-        pathToNewFile = path.resolve(currentDirectory + commands[2].substring(1), commands[1] + '.br');
+        pathToNewFile = path.resolve(currentDirectory + commands[2].substring(1), commands[1].slice(0, -3));
     } else {
-        pathToNewFile = path.resolve(commands[2], commands[1] + '.br');
+        pathToNewFile = path.resolve(commands[2], commands[1].slice(0, -3));
     }
 
     const rs = fs.createReadStream(pathToFile);
     const ws = fs.createWriteStream(pathToNewFile);
-    const brotli = zlib.createBrotliCompress();
+    const brotli = zlib.createBrotliDecompress();
 
-    rs.pipe(brotli)
+    rs
+        .pipe(brotli)
         .pipe(ws)
         .on('finish', () => { });
 
