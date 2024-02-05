@@ -13,6 +13,8 @@ import cpCommand from './modules/cpCommand.js';
 import mvCommand from './modules/mvCommand.js';
 import rmCommand from './modules/rmCommand.js';
 import osCommands from './modules/osCommands.js';
+import hashCommand from './modules/hashCommand.js';
+import compressCommand from './modules/compressCommand.js';
 
 export let currentDirectory = os.homedir();
 
@@ -44,7 +46,7 @@ rl.on('line', function (input) {
         let cdNameFolder = input.substring(3);
 
         if (cdNameFolder[0] === '.') {
-            cdNameFolder = currentDirectory + cdNameFolder.substring(1);
+            cdNameFolder = path.resolve(currentDirectory, cdNameFolder.substring(1));
         }
 
         searchDirectoriesAndFiles(cdNameFolder)
@@ -90,6 +92,16 @@ rl.on('line', function (input) {
 
     if (input.substring(0, 2) === 'os') {
         osCommands(input);
+        return;
+    }
+
+    if (input.substring(0, 4) === 'hash') {
+        hashCommand(currentDirectory, input)
+        return;
+    }
+
+    if (input.substring(0, 8) === 'compress') {
+        compressCommand(currentDirectory, input)
         return;
     }
 

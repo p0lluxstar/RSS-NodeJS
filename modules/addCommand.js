@@ -6,7 +6,6 @@ const addCommand = (currentDirectory, input) => {
 
     const fileName = input.substring(4);
     const filePath = path.join(currentDirectory, fileName);
-
     const ws = fs.createWriteStream(filePath);
 
     ws.end();

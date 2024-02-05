@@ -5,6 +5,13 @@ import { currentDirectoryMessege, operationFailedMessege } from '../utils/answer
 const cpCommand = (currentDirectory, input) => {
 
     const commands = input.split(' ');
+
+    if (commands.length < 3) {
+        operationFailedMessege();
+        currentDirectoryMessege();
+        return;
+    }
+
     const pathToFile = path.resolve(currentDirectory, commands[1]);
     let pathToNewFile;
 
