@@ -59,20 +59,17 @@ rl.on('line', function (input) {
     }
 
     if (input.substring(0, 3) === 'cat') {
-        const pathToFile = `${currentDirectory}\\${input.substring(4)}`;
-        catCommand(pathToFile, currentDirectory)
+        catCommand(currentDirectory, input)
         return;
     }
 
     if (input.substring(0, 3) === 'add') {
-        const fileName = input.substring(4);
-        addCommand(currentDirectory, fileName);
+        addCommand(currentDirectory, input);
         return;
     }
 
     if (input.substring(0, 2) === 'rn') {
-        const commands = input.split(' ');
-        rnCommand(currentDirectory, commands[1], commands[2]);
+        rnCommand(currentDirectory, input);
         return;
     }
 
