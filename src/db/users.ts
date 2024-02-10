@@ -1,8 +1,3 @@
-interface User {
-  id: string;
-  username: string;
-  age: number;
-  hobbies: string[];
-}
+import { User } from "../interface/users";
 
 export const users: User[] = [];

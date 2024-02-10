@@ -1,5 +1,5 @@
 import http from 'http';
-import { handleGetUsers, handleGetUserById, pageNotFound } from './util/handler';
+import { handleGetUsers, handleGetUserById, pageNotFound, handlePostUser } from './util/handler';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -15,6 +15,10 @@ const server = http.createServer((req, res) => {
 
   if (req.url === `/api/users/${userId}` && req.method === 'GET') {
     return handleGetUserById(res, userId);
+  }
+
+  if (req.url === '/api/users' && req.method === 'POST') {
+    return handlePostUser(req, res);
   }
 
   pageNotFound(res);
