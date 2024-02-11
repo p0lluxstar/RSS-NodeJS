@@ -1,7 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { v4 as uuidv4 } from 'uuid';
 import { users, deleteUsers } from '../db/users';
-import { User } from '../types/interfaces';
 import { handlerResAnswer } from './handlerResAnswer';
 
 const LENGTH_ID = 36;
@@ -27,14 +26,10 @@ export const handlePostUser = (req: IncomingMessage, res: ServerResponse) => {
   let userJSON = '';
   req.on('data', (chunk: string) => (userJSON += chunk));
   req.on('end', () => {
-    const userDataWithoutID: User = JSON.parse(userJSON);
-    if (
-      userDataWithoutID.username &&
-      userDataWithoutID.age &&
-      userDataWithoutID.hobbies.length > 0
-    ) {
+    const parseUserJSON = JSON.parse(userJSON);
+    if (parseUserJSON.username && parseUserJSON.age && Array.isArray(parseUserJSON.hobbies)) {
       const id = uuidv4();
-      const userDataWithID = { id, ...userDataWithoutID };
+      const userDataWithID = { id, ...parseUserJSON };
       users.push(userDataWithID);
       handlerResAnswer(res, 201, userDataWithID);
     } else {
