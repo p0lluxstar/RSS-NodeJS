@@ -1,3 +1,7 @@
-import { User } from "../interface/users";
+import { User } from '../types/interfaces';
 
-export const users: User[] = [];
+export let users: User[] = [];
+
+export const deleteUsers = (userId: string) => {
+  users = users.filter((user) => user.id !== userId);
+};

@@ -1,5 +1,13 @@
 import http from 'http';
-import { handleGetUsers, handleGetUserById, pageNotFound, handlePostUser } from './util/handler';
+import path from 'path'
+import {
+  handleGetUsers,
+  handleGetUserById,
+  handlePostUser,
+  handlePutUser,
+  handleDeleteUser,
+  pageNotFound,
+} from './util/handlers';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -9,7 +17,7 @@ const server = http.createServer((req, res) => {
   const urlParts = req.url?.split('/') ?? [];
   const userId = urlParts[urlParts.length - 1];
 
-  if (req.url === '/api/users' && req.method === 'GET') {
+  if ((req.url === '/api/users' || req.url === '/api/users/') && req.method === 'GET') {
     return handleGetUsers(res);
   }
 
@@ -19,6 +27,14 @@ const server = http.createServer((req, res) => {
 
   if (req.url === '/api/users' && req.method === 'POST') {
     return handlePostUser(req, res);
+  }
+
+  if (req.url === `/api/users/${userId}` && req.method === 'PUT') {
+    return handlePutUser(req, res, userId);
+  }
+
+  if (req.url === `/api/users/${userId}` && req.method === 'DELETE') {
+    return handleDeleteUser(req, res, userId);
   }
 
   pageNotFound(res);
