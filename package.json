@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/preset-typescript": "^7.23.3",
     "@types/jest": "^29.5.12",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^9.0.8",

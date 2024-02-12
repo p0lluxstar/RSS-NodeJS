@@ -6,7 +6,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 const port = 3000;
 
 describe('GET /api/users', () => {
-  let server: any;
+  let server: http.Server;
 
   beforeAll(() => {
     server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
