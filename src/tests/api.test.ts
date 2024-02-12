@@ -1,6 +1,6 @@
 import http from 'http';
 import supertest from 'supertest';
-import { handleGetUsers, handleGetUserById } from '../util/handlers';
+import { handleGetUsers, handleGetUserById } from '../util/handlerMethods';
 import { IncomingMessage, ServerResponse } from 'http';
 
 const port = 3000;
