@@ -6,10 +6,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const numCPUs = os.cpus().length;
-let port: string = process.env.PORT || '';
+const port: string = process.env.PORT || '';
 
 if (cluster.isMaster) {
-  console.log(`Starting the server!`);
+  console.log(`Starting Master!`);
 
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork();
