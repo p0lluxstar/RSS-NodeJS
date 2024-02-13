@@ -2,8 +2,10 @@ import http from 'http';
 import supertest from 'supertest';
 import { handleGetUsers, handleGetUserById } from '../util/handlerMethods';
 import { IncomingMessage, ServerResponse } from 'http';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const port = 3000;
+const port: string = process.env.PORT || '';
 
 describe('GET /api/users', () => {
   let server: http.Server;
