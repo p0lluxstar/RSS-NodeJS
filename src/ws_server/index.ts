@@ -1,56 +1,88 @@
 import WebSocket from 'ws';
-
-interface A {
-  type: string;
-  data: { name: string; index: number; error: boolean; errorText: string };
-  id: number;
-}
-
-interface B {
-    type: string,
-    data:
-        [
-            {
-                name: string,
-                wins: number,
-            }
-        ],
-    id: 0,
-}
+import { Player, UpdateRoom, UpdateWinners } from '../types/interfaces';
 
 export const wsServerStart = () => {
   const wsServer = new WebSocket.Server({ port: 3000 });
 
-  const a:A = {
-    type: 'reg',
-    data: {
-      name: 'Jonh',
-      index: 1,
-      error: false,
-      errorText: 'err',
-    },
-    id: 1,
+  let players: Array<{ id: number; index: number; name: string; password: string }> = [];
+  let playersId = 0;
+
+  let winners: Array<{}> = [];
+
+  let updateRoom: UpdateRoom = {
+    type: 'update_room',
+    data: [],
+    id: 0,
   };
 
-  const b:B = {
-    type: "update_winners",
-    data:
-        [
-            {
-                name: "Jonh",
-                wins: 0,
-            }
-        ],
+  const updateWinners: UpdateWinners = {
+    type: 'update_winners',
+    data: [],
     id: 0,
-}
+  };
 
   wsServer.on('connection', function connection(ws) {
     console.log('Client connected');
 
     ws.on('message', function incoming(message: string) {
-      console.log(`Received message: ${message}`);
-      ws.send(JSON.stringify(a));
-      ws.send(JSON.stringify(b));
+      const messageJSON = JSON.parse(message);
+      const index = Date.now();
+
+      if (messageJSON.type === 'reg') {
+        const dataAuth = JSON.parse(JSON.parse(message).data);
+
+        players.push({
+          id: playersId,
+          index: index,
+          name: dataAuth.name,
+          password: dataAuth.password,
+        });
+
+        const player: Player = {
+          type: 'reg',
+          data: JSON.stringify({
+            name: players[playersId].name,
+            index: players[playersId].index,
+            error: false,
+            errorText: 'err',
+          }),
+          id: playersId,
+        };
+
+        ws.send(JSON.stringify(player));
+        ws.send(JSON.stringify(updateWinners));
+        ws.send(JSON.stringify(updateRoom));
+      }
+
+      if (messageJSON.type === 'create_room') {
+        updateRoom.data[0] = JSON.stringify([
+          {
+            roomId: index,
+            roomUsers: [
+              {
+                name: '',
+                index: 0,
+              },
+            ],
+          },
+        ]);
+        ws.send(JSON.stringify(updateRoom));
+      }
+
+      if (messageJSON.type === 'add_user_to_room') {
+        updateRoom.data[0] = JSON.stringify([
+          {
+            roomId: index,
+            roomUsers: [
+              {
+                name: players[playersId].name,
+                index: playersId,
+              },
+            ],
+          },
+        ]);
+        ws.send(JSON.stringify(updateRoom));
+      }
     });
 
     ws.on('close', function close() {
