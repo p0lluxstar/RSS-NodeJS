@@ -7,6 +7,9 @@ export const wsServerStart = () => {
   let players: Array<{ id: number; index: number; name: string; password: string }> = [];
   let playersId = 0;
 
+  let rooms: Array<{ id: number; index: number; name: string }> = [];
+  let roomId = 0;
+
   let winners: Array<{}> = [];
 
   let updateRoom: UpdateRoom = {
@@ -30,7 +33,6 @@ export const wsServerStart = () => {
 
       if (messageJSON.type === 'reg') {
         const dataAuth = JSON.parse(JSON.parse(message).data);
-
         players.push({
           id: playersId,
           index: index,
@@ -52,9 +54,17 @@ export const wsServerStart = () => {
         ws.send(JSON.stringify(player));
         ws.send(JSON.stringify(updateWinners));
         ws.send(JSON.stringify(updateRoom));
+
+        console.log('players', players);
       }
 
       if (messageJSON.type === 'create_room') {
+        rooms.push({
+          id: roomId,
+          index: index,
+          name: players[roomId].name,
+        });
+
         updateRoom.data[0] = JSON.stringify([
           {
             roomId: index,
@@ -67,21 +77,25 @@ export const wsServerStart = () => {
           },
         ]);
         ws.send(JSON.stringify(updateRoom));
+        roomId++;
       }
 
       if (messageJSON.type === 'add_user_to_room') {
         updateRoom.data[0] = JSON.stringify([
           {
-            roomId: index,
+            roomId: rooms[0].index,
             roomUsers: [
               {
                 name: players[playersId].name,
-                index: playersId,
+                index: players[playersId].index,
               },
             ],
           },
         ]);
         ws.send(JSON.stringify(updateRoom));
+        playersId++;
+
+        console.log('rooms', rooms);
       }
     });
 
