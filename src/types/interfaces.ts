@@ -7,11 +7,21 @@ export interface Player {
 export interface UpdateWinners {
   type: string;
   data: [];
-  id: 0;
+  id: number;
 }
 
 export interface UpdateRoom {
   type: string;
   data: Array<{}>;
   id: number;
+}
+
+export interface CreatGame {
+  type: string;
+  data: Array<{}>;
+  id: number;
+}
+
+export interface Websocket {
+  send(data: string): void;
 }

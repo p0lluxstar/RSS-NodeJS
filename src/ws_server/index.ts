@@ -1,29 +1,11 @@
 import WebSocket from 'ws';
-import { Player, UpdateRoom, UpdateWinners } from '../types/interfaces';
+import Reg from '../modules/Reg';
+import CreateRoom from '../modules/CreateRoom';
+import AddUserToRoom from '../modules/AddUserToRoom';
+import CreateGame from '../modules/CreateGame';
 
 export const wsServerStart = () => {
   const wsServer = new WebSocket.Server({ port: 3000 });
-
-  let players: Array<{ id: number; index: number; name: string; password: string }> = [];
-  let playersId = 0;
-
-  let rooms: Array<{ id: number; index: number; name: string }> = [];
-  let roomId = 0;
-
-  let winners: Array<{}> = [];
-
-  let updateRoom: UpdateRoom = {
-    type: 'update_room',
-    data: [],
-    id: 0,
-  };
-
-  const updateWinners: UpdateWinners = {
-    type: 'update_winners',
-    data: [],
-    id: 0,
-  };
-
   wsServer.on('connection', function connection(ws) {
     console.log('Client connected');
 
@@ -32,75 +14,24 @@ export const wsServerStart = () => {
       const index = Date.now();
 
       if (messageJSON.type === 'reg') {
-        const dataAuth = JSON.parse(JSON.parse(message).data);
-        players.push({
-          id: playersId,
-          index: index,
-          name: dataAuth.name,
-          password: dataAuth.password,
-        });
-
-        const player: Player = {
-          type: 'reg',
-          data: JSON.stringify({
-            name: players[playersId].name,
-            index: players[playersId].index,
-            error: false,
-            errorText: 'err',
-          }),
-          id: playersId,
-        };
-
-        ws.send(JSON.stringify(player));
-        ws.send(JSON.stringify(updateWinners));
-        ws.send(JSON.stringify(updateRoom));
-
-        console.log('players', players);
+        Reg(index, message, ws);
       }
 
       if (messageJSON.type === 'create_room') {
-        rooms.push({
-          id: roomId,
-          index: index,
-          name: players[roomId].name,
-        });
-
-        updateRoom.data[0] = JSON.stringify([
-          {
-            roomId: index,
-            roomUsers: [
-              {
-                name: '',
-                index: 0,
-              },
-            ],
-          },
-        ]);
-        ws.send(JSON.stringify(updateRoom));
-        roomId++;
+        CreateRoom(index, ws);
       }
 
       if (messageJSON.type === 'add_user_to_room') {
-        updateRoom.data[0] = JSON.stringify([
-          {
-            roomId: rooms[0].index,
-            roomUsers: [
-              {
-                name: players[playersId].name,
-                index: players[playersId].index,
-              },
-            ],
-          },
-        ]);
-        ws.send(JSON.stringify(updateRoom));
-        playersId++;
-
-        console.log('rooms', rooms);
+        AddUserToRoom(ws);
       }
+
+      /* if (messageJSON.type === 'create_game') {
+        AddUserToRoom(ws);
+      } */
     });
 
     ws.on('close', function close() {
-      console.log('Client disconnected');
+      CreateGame(ws);
     });
   });
 };
