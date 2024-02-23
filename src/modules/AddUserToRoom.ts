@@ -1,7 +1,8 @@
 import { updateRoom, rooms, currentRoom } from './CreateRoom';
 import { players } from './Reg';
-import { Websocket } from '../types/interfaces';
 import CreateGame from './CreateGame';
+import { Websocket } from '../types/interfaces';
+
 
 export let currentUser = 0;
 

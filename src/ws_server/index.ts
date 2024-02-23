@@ -3,6 +3,7 @@ import Reg from '../modules/Reg';
 import CreateRoom from '../modules/CreateRoom';
 import AddUserToRoom from '../modules/AddUserToRoom';
 import CreateGame from '../modules/CreateGame';
+import StartGame from '../modules/StartGame';
 
 export const wsServerStart = () => {
   const wsServer = new WebSocket.Server({ port: 3000 });
@@ -28,6 +29,10 @@ export const wsServerStart = () => {
       /* if (messageJSON.type === 'create_game') {
         AddUserToRoom(ws);
       } */
+
+      if (messageJSON.type === 'add_ships') {
+        StartGame(ws);
+      }
     });
 
     ws.on('close', function close() {
