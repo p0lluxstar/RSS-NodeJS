@@ -3,24 +3,23 @@ import { players } from './Reg';
 import CreateGame from './CreateGame';
 import { Websocket } from '../types/interfaces';
 
+/* export let currentUser = 0; */
 
-export let currentUser = 0;
-
-const AddUserToRoom = (ws: Websocket) => {
+const AddUserToRoom = (ws: Websocket, messageJSON: string) => {
+  console.log('addUser', messageJSON);
   if (players.length < 2) {
     updateRoom.data[0] = JSON.stringify([
       {
         roomId: rooms[currentRoom].index,
         roomUsers: [
           {
-            name: players[currentUser].name,
-            index: players[currentUser].index,
+            name: players[0].name,
+            index: players[0].index,
           },
         ],
       },
     ]);
     ws.send(JSON.stringify(updateRoom));
-    currentUser++;
   } else {
     CreateGame(ws);
     updateRoom.data[0] = JSON.stringify([]);

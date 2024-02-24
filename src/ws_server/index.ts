@@ -4,6 +4,8 @@ import CreateRoom from '../modules/CreateRoom';
 import AddUserToRoom from '../modules/AddUserToRoom';
 import CreateGame from '../modules/CreateGame';
 import StartGame from '../modules/StartGame';
+import RandomAttack from '../modules/RandomAttack';
+import Attack from '../modules/Attack';
 
 export const wsServerStart = () => {
   const wsServer = new WebSocket.Server({ port: 3000 });
@@ -12,7 +14,7 @@ export const wsServerStart = () => {
 
     ws.on('message', function incoming(message: string) {
       const messageJSON = JSON.parse(message);
-      const index = Date.now();
+      const index = String(Date.now());
 
       if (messageJSON.type === 'reg') {
         Reg(index, message, ws);
@@ -23,7 +25,7 @@ export const wsServerStart = () => {
       }
 
       if (messageJSON.type === 'add_user_to_room') {
-        AddUserToRoom(ws);
+        AddUserToRoom(ws, messageJSON);
       }
 
       /* if (messageJSON.type === 'create_game') {
@@ -31,7 +33,12 @@ export const wsServerStart = () => {
       } */
 
       if (messageJSON.type === 'add_ships') {
-        StartGame(ws);
+        const dataShips = JSON.parse(messageJSON.data);
+        StartGame(ws, dataShips);
+      }
+
+      if (messageJSON.type === 'randomAttack') {
+        Attack(ws)
       }
     });
 
