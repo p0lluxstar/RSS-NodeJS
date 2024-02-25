@@ -1,13 +1,16 @@
 import { Websocket } from '../types/interfaces';
+import { webSocketArray } from '../ws_server';
 
-const Turn = (ws: Websocket, currentPlayer: string) => {
+const Turn = (ws: Websocket, num: number, currentPlayer: string ) => {
   const turn = {
     type: 'turn',
-    data: JSON.stringify({currentPlayer: currentPlayer}),
+    data: JSON.stringify({ currentPlayer: currentPlayer }),
     id: 0,
   };
 
-  ws.send(JSON.stringify(turn));
+  if (num === 0 || num === 1) {
+    webSocketArray[num].send(JSON.stringify(turn));
+  }
 };
 
 export default Turn;

@@ -24,4 +24,5 @@ export interface CreatGame {
 
 export interface Websocket {
   send(data: string): void;
+  id: number;
 }

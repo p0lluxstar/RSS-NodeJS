@@ -1,15 +1,12 @@
 import { games } from './CreateGame';
 import { players } from './Reg';
+import Attack from './Attack';
 import { Websocket } from '../types/interfaces';
 
 const RandomAttack = (ws: Websocket) => {
-  const randomAttack = {
-    type: 'randomAttack',
-    data: JSON.stringify({ gameId: games[0].idGame, indexPlayer: players[0].index }),
-    id: 0,
-  };
-
-  ws.send(JSON.stringify(randomAttack));
+  const positionX = Math.floor(Math.random() * 10);
+  const positionY = Math.floor(Math.random() * 10);
+  Attack(ws, positionX, positionY);
 };
 
 export default RandomAttack;

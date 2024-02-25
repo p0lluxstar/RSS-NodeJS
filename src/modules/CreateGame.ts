@@ -1,9 +1,9 @@
 import { rooms } from './CreateRoom';
 import { players } from './Reg';
 import { CreatGame, Websocket } from '../types/interfaces';
+import { webSocketArray } from '../ws_server';
 
 export let games: Array<{ idGame: string; idPlayer: string }> = [];
-let currentUserInGame = 1;
 
 export let createGame: CreatGame = {
   type: 'create_game',
@@ -14,15 +14,15 @@ export let createGame: CreatGame = {
 const CreateGame = (ws: Websocket) => {
   games.push({
     idGame: rooms[0].index,
-    idPlayer: players[currentUserInGame].index,
+    idPlayer: players[ws.id].index,
   });
 
   createGame.data[0] = JSON.stringify({
     idGame: games[0].idGame,
-    idPlayer: players[currentUserInGame].index,
+    idPlayer: players[ws.id].index,
   });
-  ws.send(JSON.stringify(createGame));
-  currentUserInGame--;
+  webSocketArray[ws.id].send(JSON.stringify(createGame));
+
   console.log('games', games);
 };
 

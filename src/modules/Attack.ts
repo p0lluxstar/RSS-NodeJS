@@ -1,24 +1,35 @@
 import { games } from './CreateGame';
 import { players } from './Reg';
 import Turn from './Turn';
+import RandomAttack from './RandomAttack';
 import { Websocket } from '../types/interfaces';
+import { webSocketArray } from '../ws_server';
 
-const Attack = (ws: Websocket) => {
+const Attack = (ws: Websocket, positionX: number, positionY: number) => {
   const attack = {
     type: 'attack',
     data: JSON.stringify({
       position: {
-        x: 0,
-        y: 0,
+        x: positionX,
+        y: positionY,
       },
-      currentPlayer: players[0].index,
+      currentPlayer: players[ws.id].index,
       status: 'miss',
     }),
     id: 0,
   };
 
-  ws.send(JSON.stringify(attack));
-  Turn(ws, players[0].index);
+  if (ws.id === 1) {
+    webSocketArray[1].send(JSON.stringify(attack));
+    webSocketArray[0].send(JSON.stringify(attack));
+    Turn(ws, 0, players[0].index);
+    Turn(ws, 1, players[0].index);
+  } else {
+    webSocketArray[0].send(JSON.stringify(attack));
+    webSocketArray[1].send(JSON.stringify(attack));
+    Turn(ws, 0, players[1].index);
+    Turn(ws, 1, players[1].index);
+  }
 };
 
 export default Attack;

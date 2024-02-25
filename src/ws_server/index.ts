@@ -7,10 +7,23 @@ import StartGame from '../modules/StartGame';
 import RandomAttack from '../modules/RandomAttack';
 import Attack from '../modules/Attack';
 
+interface CustomWebSocket extends WebSocket {
+  id: number;
+}
+
+export let webSocketArray: any[] = [];
+
+let idWebSocket = 0;
+
 export const wsServerStart = () => {
-  const wsServer = new WebSocket.Server({ port: 3000 });
-  wsServer.on('connection', function connection(ws) {
+  const wsServer: WebSocket.Server = new WebSocket.Server({ port: 3000 });
+  wsServer.on('connection', function connection(ws: CustomWebSocket) {
     console.log('Client connected');
+
+    ws.id = idWebSocket;
+    idWebSocket++;
+
+    webSocketArray.push(ws);
 
     ws.on('message', function incoming(message: string) {
       const messageJSON = JSON.parse(message);
@@ -38,7 +51,14 @@ export const wsServerStart = () => {
       }
 
       if (messageJSON.type === 'randomAttack') {
-        Attack(ws)
+        RandomAttack(ws);
+      }
+
+      if (messageJSON.type === 'attack') {
+        const data = messageJSON.data;
+        const x = JSON.parse(data).x;
+        const y = JSON.parse(data).y;
+        Attack(ws, x, y)
       }
     });
 

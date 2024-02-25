@@ -1,15 +1,15 @@
 import { updateRoom } from './CreateRoom';
 import { updateWinners } from './UpdateWinners';
 import { Player, Websocket } from '../types/interfaces';
+import { webSocketArray } from '../ws_server';
 
 export let players: Array<{ idUser: number; index: string; name: string; password: string }> = [];
-let currentUser = 0;
 
 const Reg = (index: string, message: string, ws: Websocket) => {
   const dataAuth = JSON.parse(JSON.parse(message).data);
 
   players.push({
-    idUser: currentUser,
+    idUser: ws.id,
     index: index,
     name: dataAuth.name,
     password: dataAuth.password,
@@ -18,20 +18,19 @@ const Reg = (index: string, message: string, ws: Websocket) => {
   const player: Player = {
     type: 'reg',
     data: JSON.stringify({
-      name: players[currentUser].name,
-      index: players[currentUser].index,
+      name: players[ws.id].name,
+      index: players[ws.id].index,
       error: false,
       errorText: 'err',
     }),
-    id: currentUser,
+    id: 0,
   };
 
-  ws.send(JSON.stringify(player));
-  ws.send(JSON.stringify(updateWinners));
-  ws.send(JSON.stringify(updateRoom));
+  webSocketArray[ws.id].send(JSON.stringify(player));
+  webSocketArray[ws.id].send(JSON.stringify(updateWinners));
+  webSocketArray[ws.id].send(JSON.stringify(updateRoom));
 
-  currentUser++;
-  console.log('plauers', players);
+  console.log('players', players);
 };
 
 export default Reg;
