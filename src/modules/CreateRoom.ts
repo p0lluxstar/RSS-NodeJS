@@ -7,7 +7,7 @@ export let currentRoom = 0;
 
 export let updateRoom: UpdateRoom = {
   type: 'update_room',
-  data: [],
+  data: JSON.stringify([]),
   id: 0,
 };
 
@@ -18,7 +18,7 @@ const CreateRoom = (index: string, ws: Websocket) => {
     name: players[currentRoom].name,
   });
 
-  updateRoom.data[0] = JSON.stringify([
+  updateRoom.data = JSON.stringify([
     {
       roomId: index,
       roomUsers: [

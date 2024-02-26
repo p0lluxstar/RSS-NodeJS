@@ -3,7 +3,7 @@ import { updateWinners } from './UpdateWinners';
 import { Player, Websocket } from '../types/interfaces';
 import { webSocketArray } from '../ws_server';
 
-export let players: Array<{ idUser: number; index: string; name: string; password: string }> = [];
+export let players: Array<{ idUser: number; index: string; name: string; password: string, win: number }> = [];
 
 const Reg = (index: string, message: string, ws: Websocket) => {
   const dataAuth = JSON.parse(JSON.parse(message).data);
@@ -13,6 +13,7 @@ const Reg = (index: string, message: string, ws: Websocket) => {
     index: index,
     name: dataAuth.name,
     password: dataAuth.password,
+    win: 0
   });
 
   const player: Player = {

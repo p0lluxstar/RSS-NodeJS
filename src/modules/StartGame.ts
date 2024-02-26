@@ -14,25 +14,37 @@ interface DataShips {
   indexPlayer: string;
 }
 
+interface DataPositionShips {
+    player: string;
+    ships: Array<string>;
+    quantityHit: number;
+  }
+
 let start = false;
 
-let XY: any[] = [];
+export let dataPositionShipsAll:any[] = [];
 
 const StartGame = (ws: Websocket, dataShips: DataShips) => {
-  console.log(dataShips.ships);
+  const dataPositionShips: DataPositionShips = {
+    player: '',
+    ships: [],
+    quantityHit: 0
+  };
+
+  dataPositionShips.player = players[ws.id].index;
   dataShips.ships.forEach((el) => {
     if (el.direction === false) {
       for (let i = 0; i < el.length; i++) {
-        XY.push(`${el.position.x + i},${el.position.y}`);
+        dataPositionShips.ships.push(`${el.position.x + i},${el.position.y}`);
       }
     } else {
       for (let i = 0; i < el.length; i++) {
-        XY.push(`${el.position.x},${el.position.y + i}`);
+        dataPositionShips.ships.push(`${el.position.x},${el.position.y + i}`);
       }
     }
   });
 
-  console.log(XY);
+  dataPositionShipsAll.push(dataPositionShips);
 
   const startGame = {
     type: 'start_game',

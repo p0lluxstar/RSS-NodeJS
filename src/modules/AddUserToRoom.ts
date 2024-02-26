@@ -9,7 +9,7 @@ import { webSocketArray } from '../ws_server';
 const AddUserToRoom = (ws: Websocket, messageJSON: string) => {
   console.log('addUser', messageJSON);
   if (players.length < 2) {
-    updateRoom.data[0] = JSON.stringify([
+    updateRoom.data = JSON.stringify([
       {
         roomId: rooms[currentRoom].index,
         roomUsers: [
@@ -23,7 +23,7 @@ const AddUserToRoom = (ws: Websocket, messageJSON: string) => {
     ws.send(JSON.stringify(updateRoom));
   } else {
     CreateGame(ws);
-    updateRoom.data[0] = JSON.stringify([]);
+    updateRoom.data = JSON.stringify([]);
     webSocketArray[ws.id].send(JSON.stringify(updateRoom));
   }
 };

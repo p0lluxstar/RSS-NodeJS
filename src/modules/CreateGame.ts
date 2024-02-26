@@ -7,7 +7,7 @@ export let games: Array<{ idGame: string; idPlayer: string }> = [];
 
 export let createGame: CreatGame = {
   type: 'create_game',
-  data: [],
+  data: JSON.stringify([]),
   id: 0,
 };
 
@@ -17,7 +17,7 @@ const CreateGame = (ws: Websocket) => {
     idPlayer: players[ws.id].index,
   });
 
-  createGame.data[0] = JSON.stringify({
+  createGame.data = JSON.stringify({
     idGame: games[0].idGame,
     idPlayer: players[ws.id].index,
   });

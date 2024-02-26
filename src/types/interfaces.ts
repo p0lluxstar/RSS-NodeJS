@@ -6,19 +6,19 @@ export interface Player {
 
 export interface UpdateWinners {
   type: string;
-  data: [];
+  data: any;
   id: number;
 }
 
 export interface UpdateRoom {
   type: string;
-  data: Array<{}>;
+  data: string;
   id: number;
 }
 
 export interface CreatGame {
   type: string;
-  data: Array<{}>;
+  data: string;
   id: number;
 }
 

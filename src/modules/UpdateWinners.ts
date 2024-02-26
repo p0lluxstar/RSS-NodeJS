@@ -1,9 +1,9 @@
-import { UpdateWinners } from "../types/interfaces";
+import { UpdateWinners } from '../types/interfaces';
 
 let winners: Array<{}> = [];
 
 export const updateWinners: UpdateWinners = {
   type: 'update_winners',
-  data: [],
+  data: JSON.stringify([]),
   id: 0,
 };
