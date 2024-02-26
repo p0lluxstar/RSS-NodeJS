@@ -1,24 +1,7 @@
 import { players } from './Reg';
 import Turn from './Turn';
-import { games } from './CreateGame';
-import { Websocket } from '../types/interfaces';
 import { webSocketArray } from '../ws_server';
-
-interface DataShips {
-  ships: Array<{
-    position: { x: number; y: number };
-    direction: boolean;
-    type: string;
-    length: number;
-  }>;
-  indexPlayer: string;
-}
-
-interface DataPositionShips {
-    player: string;
-    ships: Array<string>;
-    quantityHit: number;
-  }
+import { Websocket, DataShips, DataPositionShips } from '../types/interfaces';
 
 let start = false;
 

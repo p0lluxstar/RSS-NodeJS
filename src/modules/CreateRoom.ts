@@ -1,8 +1,9 @@
 import { players } from './Reg';
-import { UpdateRoom, Websocket } from '../types/interfaces';
 import { webSocketArray } from '../ws_server';
+import { UpdateRoom, Websocket } from '../types/interfaces';
 
 export let rooms: Array<{ idRoom: number; index: string; name: string }> = [];
+
 export let currentRoom = 0;
 
 export let updateRoom: UpdateRoom = {
@@ -29,10 +30,8 @@ const CreateRoom = (index: string, ws: Websocket) => {
       ],
     },
   ]);
-  
-  webSocketArray[ws.id].send(JSON.stringify(updateRoom));
 
-  console.log('rooms', rooms)
+  webSocketArray[ws.id].send(JSON.stringify(updateRoom));
 };
 
 export default CreateRoom;

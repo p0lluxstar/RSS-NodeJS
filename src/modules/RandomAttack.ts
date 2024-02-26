@@ -1,5 +1,3 @@
-import { games } from './CreateGame';
-import { players } from './Reg';
 import Attack from './Attack';
 import { Websocket } from '../types/interfaces';
 

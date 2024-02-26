@@ -1,13 +1,10 @@
 import { updateRoom, rooms, currentRoom } from './CreateRoom';
 import { players } from './Reg';
 import CreateGame from './CreateGame';
-import { Websocket } from '../types/interfaces';
 import { webSocketArray } from '../ws_server';
-
-/* export let currentUser = 0; */
+import { Websocket } from '../types/interfaces';
 
 const AddUserToRoom = (ws: Websocket, messageJSON: string) => {
-  console.log('addUser', messageJSON);
   if (players.length < 2) {
     updateRoom.data = JSON.stringify([
       {

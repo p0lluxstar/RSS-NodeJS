@@ -26,3 +26,19 @@ export interface Websocket {
   send(data: string): void;
   id: number;
 }
+
+export interface DataShips {
+  ships: Array<{
+    position: { x: number; y: number };
+    direction: boolean;
+    type: string;
+    length: number;
+  }>;
+  indexPlayer: string;
+}
+
+export interface DataPositionShips {
+  player: string;
+  ships: Array<string>;
+  quantityHit: number;
+}

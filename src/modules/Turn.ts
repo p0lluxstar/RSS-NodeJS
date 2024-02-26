@@ -1,7 +1,7 @@
-import { Websocket } from '../types/interfaces';
 import { webSocketArray } from '../ws_server';
+import { Websocket } from '../types/interfaces';
 
-const Turn = (ws: Websocket, num: number, currentPlayer: string ) => {
+const Turn = (ws: Websocket, num: number, currentPlayer: string) => {
   const turn = {
     type: 'turn',
     data: JSON.stringify({ currentPlayer: currentPlayer }),

@@ -1,11 +1,9 @@
-import { games } from './CreateGame';
 import { players } from './Reg';
 import Turn from './Turn';
-import RandomAttack from './RandomAttack';
-import { Websocket } from '../types/interfaces';
 import { webSocketArray } from '../ws_server';
 import { dataPositionShipsAll } from './StartGame';
 import Finish from './Finish';
+import { Websocket } from '../types/interfaces';
 
 const Attack = (ws: Websocket, positionX: number, positionY: number) => {
   const XY = `${positionX},${positionY}`;
@@ -15,7 +13,7 @@ const Attack = (ws: Websocket, positionX: number, positionY: number) => {
     dataPositionShipsAll[ws.id].ships.forEach((el: string) => {
       if (el === XY) {
         status = 'shot';
-        dataPositionShipsAll[ws.id].quantityHit += 19;
+        dataPositionShipsAll[ws.id].quantityHit++;
         return;
       }
     });
@@ -46,7 +44,7 @@ const Attack = (ws: Websocket, positionX: number, positionY: number) => {
     Turn(ws, 1, players[1].index);
   }
 
-  if (dataPositionShipsAll[ws.id].quantityHit === 19) {
+  if (dataPositionShipsAll[ws.id].quantityHit === 20) {
     Finish(ws);
   }
 };

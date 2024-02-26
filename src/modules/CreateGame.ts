@@ -1,7 +1,7 @@
 import { rooms } from './CreateRoom';
 import { players } from './Reg';
-import { CreatGame, Websocket } from '../types/interfaces';
 import { webSocketArray } from '../ws_server';
+import { CreatGame, Websocket } from '../types/interfaces';
 
 export let games: Array<{ idGame: string; idPlayer: string }> = [];
 
@@ -12,18 +12,18 @@ export let createGame: CreatGame = {
 };
 
 const CreateGame = (ws: Websocket) => {
-  games.push({
-    idGame: rooms[0].index,
-    idPlayer: players[ws.id].index,
-  });
+  if (rooms.length > 0) {
+    games.push({
+      idGame: rooms[0].index,
+      idPlayer: players[ws.id].index,
+    });
 
-  createGame.data = JSON.stringify({
-    idGame: games[0].idGame,
-    idPlayer: players[ws.id].index,
-  });
-  webSocketArray[ws.id].send(JSON.stringify(createGame));
-
-  console.log('games', games);
+    createGame.data = JSON.stringify({
+      idGame: games[0].idGame,
+      idPlayer: players[ws.id].index,
+    });
+    webSocketArray[ws.id].send(JSON.stringify(createGame));
+  }
 };
 
 export default CreateGame;

@@ -1,7 +1,7 @@
 import { updateRoom } from './CreateRoom';
 import { updateWinners } from './UpdateWinners';
-import { Player, Websocket } from '../types/interfaces';
 import { webSocketArray } from '../ws_server';
+import { Player, Websocket } from '../types/interfaces';
 
 export let players: Array<{
   idUser: number;
@@ -27,10 +27,10 @@ const Reg = (index: string, message: string, ws: Websocket) => {
     const player: Player = {
       type: 'reg',
       data: JSON.stringify({
-        name: players[ws.id].name,
-        index: players[ws.id].index,
+        name: dataAuth.name,
+        index: index,
         error: false,
-        errorText: 'err',
+        errorText: '',
       }),
       id: 0,
     };
@@ -39,7 +39,17 @@ const Reg = (index: string, message: string, ws: Websocket) => {
     webSocketArray[ws.id].send(JSON.stringify(updateWinners));
     webSocketArray[ws.id].send(JSON.stringify(updateRoom));
   } else {
-    console.log('The user is already registered with this name!');
+    const player: Player = {
+      type: 'reg',
+      data: JSON.stringify({
+        name: dataAuth.name,
+        index: index,
+        error: true,
+        errorText: 'The user is already registered with this name!',
+      }),
+      id: 0,
+    };
+    webSocketArray[ws.id].send(JSON.stringify(player));
   }
 };
 

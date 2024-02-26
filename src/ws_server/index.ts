@@ -41,10 +41,6 @@ export const wsServerStart = () => {
         AddUserToRoom(ws, messageJSON);
       }
 
-      /* if (messageJSON.type === 'create_game') {
-        AddUserToRoom(ws);
-      } */
-
       if (messageJSON.type === 'add_ships') {
         const dataShips = JSON.parse(messageJSON.data);
         StartGame(ws, dataShips);
@@ -58,7 +54,7 @@ export const wsServerStart = () => {
         const data = messageJSON.data;
         const x = JSON.parse(data).x;
         const y = JSON.parse(data).y;
-        Attack(ws, x, y)
+        Attack(ws, x, y);
       }
     });
 
