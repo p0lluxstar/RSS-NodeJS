@@ -3,9 +3,9 @@
 ## Installation
 
 1. Clone/download repo
-2. `npm install`
-3. cd rss-nodejs
-4. git checkout battleship
+2. `cd rss-nodejs`
+3. `git checkout battleship`
+4. `npm install`
 
 ## Usage
 
